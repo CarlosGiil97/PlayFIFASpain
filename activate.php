@@ -90,33 +90,45 @@ $miDB = conexion();
 					
 					<div id="main">
 
-                    <div class="alert alert-success" id="alert-success" role="alert" ></div>
+                    <!-- <div class="alert alert-success" id="alert-success" role="alert" ></div>
                     <div class="alert alert-danger" id="alert-danger" role="alert" ></div>
-                    <div class="alert alert-secondary" id="alert-secondary" role="alert"></div>
+                    <div class="alert alert-secondary" id="alert-secondary" role="alert"></div> -->
 
                    <?php
-                    mysql_connect("localhost", "id15424712_databasa_username", "Usuario1.?--") or die(mysql_error()); // Connect to database server(localhost) with username and password.
-					mysql_select_db("id15424712_database_fifa") or die(mysql_error()); // Select registration database.
-								 
-					if(isset($_GET['id'])){
-						// Verify data
-						$id = intval(base64_decode($_GET["id"]));								 
-						$search = mysql_query("SELECT id FROM usuarios WHERE id='".$id."' AND status='pending'") or die(mysql_error()); 
-						$match  = mysql_num_rows($search);
-									 
-						if($match > 0){
-							// We have a match, activate the account
-							mysql_query("UPDATE usuarios SET status='approved' WHERE id='".$id."'  AND status='pending'") or die(mysql_error());
-							echo '<div class="statusmsg">Your account has been activated, you can now login</div>';
-						}else{
-							// No match -> invalid url or account has already been activated.
-							echo '<div class="statusmsg">The url is either invalid or you already have activated your account.</div>';
-						}
-									 
-					}else{
-						// Invalid approach
-						echo '<div class="statusmsg">Invalid approach, please use the link that has been send to your email.</div>';
-					}
+                    if (isset($_GET["id"])) {
+                    $id = intval(base64_decode($_GET["id"]));
+                    $sql = "SELECT * from usuarios where id = :id";
+                    try {
+                        $stmt = $miDB->prepare($sql);
+                        $stmt->bindValue(":id", $id);
+                        $stmt->execute();
+                        $result = $stmt->fetchAll();
+                        if (count($result) > 0) {
+                        if ($result[0]["status"] == "approved") {
+							echo '<div class="alert alert-secondary" id="alert-secondary" role="alert" > <b>Cuenta ya verificada anteriormente</b></div>';
+							$msgType = "info";
+                        } else {
+                            $sql = "UPDATE usuarios SET  status =  'approved' WHERE id = :id";
+                            $stmt = $miDB->prepare($sql);
+                            $stmt->bindValue(":id", $id);
+                            $stmt->execute();
+                            // echo '<script type="text/javascript">document.getElementById("alert-success").innerHTML = "<b>Tu cuenta se ha confirmado correctamente <img src="https://img.icons8.com/ios/50/000000/ok--v1.png"/>.Ya puede < a href="#">iniciar sesión.</a></b>";</script>';
+							echo '<div class="alert alert-success" id="alert-success" role="alert" > <b>Cuenta verificada correctamente.<a href="#">Inicie sesión</a></b></div>';
+
+                            // $msg = "Tu cuenta ha sido activada";
+
+                            // $msgType = "success";
+                        }
+                        } else {
+
+							echo '<div class="alert alert-danger" id="alert-danger" role="alert" > <b>Ha ocurrido un error.Inténtelo de nuevo</b></div>';
+
+                        // $msgType = "warning";
+                        }
+                    } catch (Exception $ex) {
+                        echo $ex->getMessage();
+                    }
+                    }
 
                     ?>
 						<!-- Post -->
