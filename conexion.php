@@ -8,16 +8,6 @@
 <?php
 require_once('php/conex.php');
 ?>
-<!--
-
-	Massively by HTML5 UP
-
-	html5up.net | @ajlkn
-
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-
--->
-
 <html>
 
 	<head>
@@ -102,7 +92,6 @@ require_once('php/conex.php');
 									<input placeholder="Nombre de usuario ..." type="text"  id="username" name="username"><br>
 									<label >Fecha de nacimiento:</label>
 									<input style="border: 0.5px solid #eeeeee;"  type="date" id="fechadenacimiento" name="fechadenacimiento"><br><br>
-
 									<label >Contraseña:</label>
 									<input placeholder="Introduzca su contraseña" onfocus="onFocus()" onblur="onBlur()" onkeyup="onkeyUp(this)" type="password" id="contrasena" name="contrasena" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required><br>
 									<div class="alert alert-info" id="checkpass1" role="alert" style="display:none">
