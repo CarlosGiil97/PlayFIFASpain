@@ -1,4 +1,5 @@
 <?php
+// session_start();
 
 function conexion(){
     $usuario = "id15424712_databasa_username";
