@@ -21,11 +21,20 @@ $resultado_obtenido = $miDB->query("SELECT id,username,email,contrasena FROM usu
       
             if($cuenta){
                 session_start();
+                
                     $_SESSION['sesion']['id']=$row['id'];
                     $_SESSION['sesion']['username']=$row['username'];
                     $_SESSION['sesion']['email']=$row['email'];
                     $_SESSION['sesion']['contrasena']=$row['contrasena'];
                     echo $cuenta;
             }
+        $resultado_obtenido1 = $miDB->query("SELECT usuario_psn FROM usuario_psn WHERE id=".$_SESSION['sesion']['id']."",PDO::FETCH_ASSOC);
+        $cuenta1 = $resultado_obtenido1->rowCount();
+        foreach ($resultado_obtenido1 as $row1) {
+            //      var_dump($row);
+                }
+                if($cuenta1){
+                    $_SESSION['sesion']['usuario_psn']=$row1['usuario_psn'];
+                }
 }
 ?>

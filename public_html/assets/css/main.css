@@ -4734,3 +4734,19 @@ input, select, textarea {
 		height:15px;
 		content: url(https://i.ibb.co/tJnN4n1/cancel.png);
 	  }
+
+	  input#psn{
+		position: relative; 
+		font-family: 'FontAwesome';
+	  }
+
+	  input#psn::before{
+		font-family: 'FontAwesome';
+		color:red;
+		position: relative;
+		left: -5px;
+		content: "\f3df";
+	  }
+
+	 
+	  

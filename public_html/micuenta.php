@@ -1,6 +1,7 @@
 <?php 
 session_start();  
 // include("php/conex.php");
+include("php/conex.php");
 
 ?>
 <!DOCTYPE HTML>
@@ -150,10 +151,63 @@ session_start();
 											</div>
 											<div class="field">
 											<h4 style="color:#3287dc !important">Vinculación cuenta PSN:</h4><br>
-											<input type="text">
+											
+											<i class="fab fa-playstation"></i>
+											<div style="display:flex">
+											<?php
+											$miDB = conexion();
+											$id=$_SESSION['sesion']['id'];
+											$stmt = $miDB->query("SELECT * FROM usuario_psn WHERE id = ".$id."");
+											$user = $stmt->fetch();
+											if($user){ ?>
+											<input id="updatepsn" style="text-align:center;margin-bottom: 10px;font-family: 'Source Sans Pro';" name="updatepsn" value ="<?php echo $_SESSION['sesion']['usuario_psn']?>" type="text" disabled>
+											<?php
+											}else{
+												?>
+												<input id="psn" name="psn" type="text"><input id="psnboton" type="submit" value="Vincular" />
+											<?php
+											}
+												?>											
+											</div>											
+											
+											<!-- Para insertar el ID_PSN en la tabla -->
+											<script>
+											$(document).ready(function() {
+												$('#psnboton').on('click', function() {
+													var psn = $('#psn').val();
+													
+													if(psn!=""){
+														$.ajax({
+															url: "add-psn.php",
+															type: "POST",
+															data: {
+																psn: psn,			
+															},
+															cache: false,
+															success: function(dataResult){
+																if(dataResult){
+																	
+																	window.location.reload();
+																}
+																else if(dataResult.statusCode==201){
+																alert("Error occured !");
+																}
+																
+															}
+														});
+													}
+													else{
+														alert('Please fill all the field !');
+													}
+												});
+											});
+											</script>
+											
+							
+											
 											</div>
 											<div class="field">
-												<input style="width:100%" type="submit" value="Programar entrenamiento" />
+												<input style="width:100%" type="submit" value="Programar entrenamiento"  onclick="location.href='entrenamientos.php';"  />
 												<input style="width:100%" type="submit" value="Historial de partidos" />
 											</div>
 										
